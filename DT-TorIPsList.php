@@ -33,6 +33,7 @@
 // 
 // TODO:
 //   option to append DNS and/or IP to Post+Pre List Text  area
+//   ability to concatenate lists and sort+unique the lists of multiple WebServers
 $VER="0.9";
 
 
