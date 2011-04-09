@@ -29,7 +29,7 @@
 // email: dumbterminal -at- tehspork.com
 // 
 //// Last Update
-//// 2011-04-08 21:12:42 PST
+//// 2011-04-09 01:05:31 PST
 // 
 // TODO:
 //   option to append DNS and/or IP to Post+Pre List Text  area
@@ -83,10 +83,11 @@ if ( !empty($argv[1]) )
   $IP = $argv[1];
 
 if ( !validateIP( $IP) ) {
+  $ADDRinput=$IP;
   $IP=gethostbyname($IP);
 
   if ( !validateIP( $IP ) ) {
-    echo "invalid IP: \"$WebServer\"";
+    echo "invalid IP or DNS: \"$ADDRinput\"";
     exit;
   }
 }
