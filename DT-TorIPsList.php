@@ -5,11 +5,11 @@
 // php file to echo list of Tor exit nodes for a particular ip/dns
 //// http://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=<ip>
 //   execute via: 
-//     php cli (php DT-TorIPsList.php <ip|dns>)
-//     apache php (with ability to export with html code)
+//     php cli  ( php DT-TorIPsList.php <ip|dns> <WebViewOn|WebViewOff|on|off> )
+//     apache php  ( /DT-TorIPsList.php?WebServer=<ip|dns>&WebView=<on|off> )
 //   Default IP/DNS priority (highest to lowest): 
-//     first parameter from CLI  ( php DT-TorIPsList.php <ip|dns> )
-//     DT-TorIPsList.php?WebServer=<ip|dns>
+//     php CLI [see above]
+//     apache php [see above]
 //     php script variable: WebServer
 //   ability to echo to stdout, or HTML5
 //   allows appending text to begenning and/or end of the Entire List and Each Line
@@ -29,12 +29,12 @@
 // email: dumbterminal -at- tehspork.com
 // 
 //// Last Update
-//// 2011-04-09 01:05:31 PST
+//// 2011-04-09 19:35:05 PST
 // 
 // TODO:
 //   option to append DNS and/or IP to Post+Pre List Text  area
 //   ability to concatenate lists and sort+unique the lists of multiple WebServers
-$VER="0.9";
+$VER="0.9.1";
 
 
 // Editable section for configuration
@@ -73,6 +73,29 @@ function validateIP($ip)
     return false; 
 } 
 
+$NL="";
+if(substr($_SERVER['PATH'],0,1) == '/'){
+  //is linux
+  $NL="\n";
+}else{
+  //is windows
+  $NL="\r\n";
+}
+
+
+if (!empty($argv[2]) )
+  if ( strtolower($argv[2]) == "webviewon"  ||  strtolower($argv[2]) == "on" )
+    $useInBrowser=true;
+  elseif ( strtolower($argv[2]) == "webviewoff"  ||  strtolower($argv[2]) == "off" )
+    $useInBrowser=false;
+
+$getWEBVIEW=@$_GET["WebView"];
+if (!empty($getWEBVIEW))
+  if( strtolower($getWEBVIEW) == "on" )
+    $useInBrowser=true;
+  if( strtolower($getWEBVIEW) == "off" )
+    $useInBrowser=false;
+
 
 $IP=$WebServer;
 
@@ -92,6 +115,7 @@ if ( !validateIP( $IP) ) {
     exit;
   }
 }
+
 $curlCMD="curl http://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=".$IP;
 
 @exec (  $curlCMD, $curlOUTput, $curlRTN );
@@ -103,25 +127,25 @@ if ( $curlRTN ) {
 
 $outs_append="";
 if( $useInBrowser ) {
-  echo "<!DOCTYPE html> \n<html id=\"home\" lang=\"eng\"> \n<head> \n<title>TorIPsList</title> \n<body> \n";
+  echo "<!DOCTYPE html> ".$NL."<html id=\"home\" lang=\"eng\"> ".$NL."<head> ".$NL."<title>TorIPsList</title> ".$NL."<body> ".$NL;
   $outs_append=$outs_append." <br />";
 }
 
 
-echo "$preLISTtext\n";
+echo "$preLISTtext".$NL;
 
-if( $useInBrowser ) {  echo "<br />\n";  }
+if( $useInBrowser ) {  echo "<br />".$NL;  }
 
 for ($i=3; $i <= sizeof($curlOUTput)-1; $i++ ) {
-  echo $preIPtext."$curlOUTput[$i]".$postIPtext.$outs_append."\n";
+  echo $preIPtext."$curlOUTput[$i]".$postIPtext.$outs_append.$NL;
 }
 
-echo "$postLISTtext\n";
+echo "$postLISTtext".$NL;
 
 
 
 if( $useInBrowser ) {
-  echo "\n</body>\n</html>";
+  echo $NL."</body>".$NL."</html>";
 }
 
 
