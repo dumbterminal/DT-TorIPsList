@@ -1,15 +1,15 @@
-// As seen in the DT-TorIPsList.php file:
+<?PHP
 //
 // Dumb Terminal Tor Exit List Generator
 // DT-TorIPsList.php
 // php file to echo list of Tor exit nodes for a particular ip/dns
 //// http://check.torproject.org/cgi-bin/TorBulkExitList.py?ip=<ip>
 //   execute via: 
-//     php cli (php DT-TorIPsList.php <ip|dns>)
-//     apache php (with ability to export with html code)
+//     php cli  ( php DT-TorIPsList.php <ip|dns> <WebViewOn|WebViewOff|on|off> )
+//     apache php  ( /DT-TorIPsList.php?WebServer=<ip|dns>&WebView=<on|off> )
 //   Default IP/DNS priority (highest to lowest): 
-//     first parameter from CLI  ( php DT-TorIPsList.php <ip|dns> )
-//     DT-TorIPsList.php?WebServer=<ip|dns>
+//     php CLI [see above]
+//     apache php [see above]
 //     php script variable: WebServer
 //   ability to echo to stdout, or HTML5
 //   allows appending text to begenning and/or end of the Entire List and Each Line
@@ -29,9 +29,9 @@
 // email: dumbterminal -at- tehspork.com
 // 
 //// Last Update
-//// 2011-04-08 21:12:42 PST
+//// 2011-04-09 19:35:05 PST
 // 
 // TODO:
 //   option to append DNS and/or IP to Post+Pre List Text  area
-// VERSION="0.9";
-
+//   ability to concatenate lists and sort+unique the lists of multiple WebServers
+$VER="0.9.1";
