@@ -46,17 +46,20 @@ this repo desperatly needs updating; pasting in a quick bash script to update ht
 
 #!/bin/bash
 
-WEBSITE="website.dns"
-WEBSITEhtaccess="website.dns.htaccess"
-
+WEBSITE="forums.fubar-online-gaming.com"
+WEBSITEhtaccess="${HOME}/FORUMS/forums.fubar-online-gaming_country_specific.htaccess"
+#LFTP_GET=
+LFTP_PUSH="${HOME}/FORUMS/lftp.sync.fubar.htaccess"
 
 rm -f /tmp/TORipouts.webdown /tmp/TORipouts /tmp/top /tmp/bottom /tmp/new_htaccess
 
-php DT-TorIPsList.php ${WEBSITE} off | sort -u | less > /tmp/TORipouts.webdown
+php ${0%/*}/DT-TorIPsList.php ${WEBSITE} off | sort -u | less > /tmp/TORipouts.webdown
 tr -d '\015' < /tmp/TORipouts.webdown > /tmp/TORipouts
 
 HTunix="/tmp/website.ht.unix"
+## LFTP_GET
 tr -d '\015' < $WEBSITEhtaccess > $HTunix
+
 
 
 SPLIT=$(grep -n '###_TOR_BLOCK_LIST_###' $HTunix | grep -Eo "^[0-9]*" )
@@ -67,5 +70,4 @@ tail -n $((LINES - SPLIT)) $HTunix > /tmp/bottom
 
 cat /tmp/top /tmp/TORipouts /tmp/bottom  > /tmp/new_htaccess
 
-
-
+lftp -f ${LFTP_PUSH}
