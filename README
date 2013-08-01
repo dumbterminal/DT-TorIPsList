@@ -35,3 +35,37 @@
 //   option to append DNS and/or IP to Post+Pre List Text  area
 //   ability to concatenate lists and sort+unique the lists of multiple WebServers
 $VER="0.9.1";
+
+
+
+
+
+2013-07-31
+this repo desperatly needs updating; pasting in a quick bash script to update htaccess file for a website; too lazy to clone this repo atm (sorry!)
+
+
+#!/bin/bash
+
+WEBSITE="website.dns"
+WEBSITEhtaccess="website.dns.htaccess"
+
+
+rm -f /tmp/TORipouts.webdown /tmp/TORipouts /tmp/top /tmp/bottom /tmp/new_htaccess
+
+php DT-TorIPsList.php ${WEBSITE} off | sort -u | less > /tmp/TORipouts.webdown
+tr -d '\015' < /tmp/TORipouts.webdown > /tmp/TORipouts
+
+HTunix="/tmp/website.ht.unix"
+tr -d '\015' < $WEBSITEhtaccess > $HTunix
+
+
+SPLIT=$(grep -n '###_TOR_BLOCK_LIST_###' $HTunix | grep -Eo "^[0-9]*" )
+LINES=$(wc -l $HTunix | grep -Eo "^[0-9]*"   )
+
+head -n ${SPLIT%%:*} $HTunix  > /tmp/top
+tail -n $((LINES - SPLIT)) $HTunix > /tmp/bottom
+
+cat /tmp/top /tmp/TORipouts /tmp/bottom  > /tmp/new_htaccess
+
+
+
