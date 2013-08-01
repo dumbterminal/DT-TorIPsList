@@ -46,10 +46,10 @@ this repo desperatly needs updating; pasting in a quick bash script to update ht
 
 #!/bin/bash
 
-WEBSITE="forums.fubar-online-gaming.com"
-WEBSITEhtaccess="${HOME}/FORUMS/forums.fubar-online-gaming_country_specific.htaccess"
+WEBSITE="site.dns"
+WEBSITEhtaccess="${HOME}/site.htaccess"
 #LFTP_GET=
-LFTP_PUSH="${HOME}/FORUMS/lftp.sync.fubar.htaccess"
+LFTP_PUSH="${HOME}/FORUMS/lftp.sync_push.htaccess"
 
 rm -f /tmp/TORipouts.webdown /tmp/TORipouts /tmp/top /tmp/bottom /tmp/new_htaccess
 
